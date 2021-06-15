@@ -13,7 +13,8 @@
             setTimeout(() => {
                 //added this delay here as some solutions may require it to update properly (i.e., click code may complete before the navigation changes)
                 //TODO: add code for processing the current selection 
-                if (document.location.href == "https://lt233-dev.herokuapp.com/problem1.html#login"){
+                var url = $(location).attr('href');
+                if (url == 'http://www.website.com/test/index.html') {
                     updateCurrentPage("login");
                 }
                 
