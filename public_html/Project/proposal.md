@@ -1,12 +1,17 @@
 IT 202 Project Proposal
 
 Project Name: Simple Bank
+
 Project Summary: This project will create a bank simulation for users. They’ll be able to have various accounts, do standard bank functions like deposit, withdraw, internal (user’s accounts)/external(other user’s accounts) transfers, and creating/closing accounts.
+
 Github Link: <https://github.com/lucast52501/IT202450/tree/Milestone-1/public_html/Project>
+
 Website Link:
+
 Your Name: Lucas Terrone
 
 Milestone Features:
+
 Milestone 1:
 - [x] User will be able to register a new account
 - [x] Form Fields
