@@ -8,16 +8,16 @@ Your Name:
 
 Milestone Features:
 	Milestone 1:
-- [ ] User will be able to register a new account
-- [ ] Form Fields
+- [x] User will be able to register a new account
+- [x] Form Fields
     - Username, email, password, (other fields optional)
     - Email is required and must be validated
     - Username is required
     - Confirm password’s match
-- [ ] Users Table
+- [x] Users Table
     - Id, username, email, password (60 characters), created, modified
-- [ ] Password must be hashed (plain text passwords will lose points)
-- [ ] Email should be unique
+- [x] Password must be hashed (plain text passwords will lose points)
+- [x] Email should be unique
 - [ ] Username should be unique
 - [ ] System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
     - The only fields that may be cleared are the password fields
