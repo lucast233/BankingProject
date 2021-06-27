@@ -17,7 +17,9 @@ session_start();
 require_once(__DIR__ . "/../lib/functions.php");
 ?>
 <style>
-    body {margin: 0;}
+    body {
+        margin: 0;
+        background-color: #EEEEEE;}
     nav ul {
         list-style-type: none;
         margin: 0;
@@ -56,7 +58,8 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="register.php">Register</a></li>
         <?php endif; ?>
         <?php if (is_logged_in()) : ?>
-            <li style="float:right"><a href="logout.php">Logout</a></li>
+            <li><a href="profile.php">Profile</a></li>
+            <li style="float:right"><a href="logout.php">Logout</a></>
         <?php endif; ?>
     </ul>
 </nav>
