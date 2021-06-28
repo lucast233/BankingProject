@@ -37,7 +37,7 @@ Milestone Features:
     - This can be home, profile, a dashboard, etc
   - [x] User will be able to logout
     - [x] Logging out will redirect to login page
-    - [ ] User should see a message that they’ve successfully logged out
+    - [x] User should see a message that they’ve successfully logged out
     - [x] Session should be destroyed (so the back button doesn’t allow them access back in)
   - [x] Basic security rules implemented
     - Authentication:
@@ -49,7 +49,7 @@ Milestone Features:
     - [x] Have a Roles table	(id, name, description, is_active, modified, created)
     - [x] Have a User Roles table (id, user_id, role_id, is_active, created, modified)
     - [ ] Include a function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
-  - [ ] Site should have basic styles/theme applied everything should be styled
+  - [x] Site should have basic styles/theme applied everything should be styled
     - I.e., forms/input, navigation bar, etc
   - [x] Any output messages/errors should be “user friendly”
     - [x] Any technical errors or debug output displayed will result in a loss of points
@@ -60,6 +60,7 @@ Milestone Features:
     - [x] Any other fields should be properly validated
     - [x] Allow password reset (only if the existing correct password is provided)
       - Hint: logic for the password check would be similar to login
+	
 	Milestone 2:
 Create the Accounts table (id, account_number [unique, always 12 characters], user_id, balance (default 0), account_type, created, modified)
 Project setup steps:
