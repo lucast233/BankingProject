@@ -86,33 +86,107 @@ if (isset($_POST["save"])) {
 $email = get_user_email();
 $username = get_username();
 ?>
-
-<form method="POST" onsubmit="return validate(this);">
-    <div class="mb-3">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="<?php se($email); ?>" />
-    </div>
-    <div class="mb-3">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" value="<?php se($username); ?>" />
-    </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
-    <div>Password Reset</div>
-    <div class="mb-3">
-        <label for="cp">Current Password</label>
-        <input type="password" name="currentPassword" id="cp" />
-    </div>
-    <div class="mb-3">
-        <label for="np">New Password</label>
-        <input type="password" name="newPassword" id="np" />
-    </div>
-    <div class="mb-3">
-        <label for="conp">Confirm Password</label>
-        <input type="password" name="confirmPassword" id="conp" />
-    </div>
-    <input type="submit" value="Update Profile" name="save" />
-</form>
-
+<style>
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  resize: vertical;
+}
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.row1 {
+  text-indent: 13%;
+}
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+<div class="container">
+    <form method="POST" onsubmit="return validate(this);">
+        <div class="row">
+            <div class="col-25">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-75">    
+                <input type="email" name="email" id="email" value="<?php se($email); ?>" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="username">Username</label>
+            </div>
+            <div class="col-75">
+                <input type="username" name="username" id="username" value="<?php se($username); ?>" />
+            </div>
+        </div>
+        <!-- DO NOT PRELOAD PASSWORD -->
+        <div class="row1">Password Reset</div>
+        <div class="row">
+            <div class="col-25">
+                <label for="cp">Current Password</label>
+            </div>
+            <div class="col-75">
+                <input type="password" name="currentPassword" id="cp" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="np">New Password</label>
+            </div>
+            <div class="col-75">
+                <input type="password" name="newPassword" id="np" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="conp">Confirm Password</label>
+            </div>
+            <div class="col-75">
+                <input type="password" name="confirmPassword" id="conp" />
+            </div>
+        </div>
+        <input type="submit" value="Update Profile" name="save" />
+    </form>
+</div>
 <script>
     function validate(form) {
         let pw = form.newPassword.value;

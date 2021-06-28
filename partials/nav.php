@@ -19,7 +19,8 @@ require_once(__DIR__ . "/../lib/functions.php");
 <style>
     body {
         margin: 0;
-        background-color: #EEEEEE;}
+        background-color: #EEEEEE;
+        }
     nav ul {
         list-style-type: none;
         margin: 0;
