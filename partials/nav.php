@@ -58,6 +58,9 @@ require_once(__DIR__ . "/../lib/functions.php");
             <li><a href="login.php">Login</a></li>
             <li><a href="register.php">Register</a></li>
         <?php endif; ?>
+        <?php if (has_role("Admin")) : ?>
+            <li><a href="#">Admin Stuff</a></li>
+        <?php endif; ?>
         <?php if (is_logged_in()) : ?>
             <li><a href="profile.php">Profile</a></li>
             <li style="float:right"><a href="logout.php">Logout</a></>

@@ -30,9 +30,22 @@ if (isset($_POST["submit"])) {
             if ($user) {
                 $upass = $user["password"];
                 if (password_verify($password, $upass)) {
-                    flash("Successful login", "success");
+                    flash("Login successful", "success");
                     unset($user["password"]);
+                    //save user info
                     $_SESSION["user"] = $user;
+                    //lookup roles assigned to this user
+                    $stmt = $db->prepare("SELECT Roles.name FROM Roles 
+                    JOIN UserRoles on Roles.id = UserRoles.role_id 
+                    where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
+                    $stmt->execute([":user_id" => $user["id"]]);
+                    $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    //save roles or empty array
+                    if ($roles) {
+                        $_SESSION["user"]["roles"] = $roles;
+                    } else {
+                        $_SESSION["user"]["roles"] = [];
+                    }
                     //echo "<pre>" . var_export($_SESSION, true) . "</pre>";
                     die(header("Location: home.php"));
                 } else {
@@ -42,62 +55,14 @@ if (isset($_POST["submit"])) {
                 se("User doesn't exist");
             }
         } catch (Exception $e) {
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
+            echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
 }
 ?>
-<style>
-input[type=text], select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  resize: vertical;
-}
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
-}
-input[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  float: right;
-}
-input[type=submit]:hover {
-  background-color: #45a049;
-}
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
-.col-25 {
-  float: left;
-  width: 25%;
-  margin-top: 6px;
-}
-.col-75 {
-  float: left;
-  width: 75%;
-  margin-top: 6px;
-}
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-@media screen and (max-width: 600px) {
-  .col-25, .col-75, input[type=submit] {
-    width: 100%;
-    margin-top: 0;
-  }
-}
-</style>
+<?php
+require_once(__DIR__ . "/../../partials/formstyles.php");
+?>
 <div class="container">
     <h1>Login</h1>
     <form method="POST" onsubmit="return validate(this);">
