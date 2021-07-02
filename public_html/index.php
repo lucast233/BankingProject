@@ -1,4 +1,3 @@
-<h1> Lucas Terrone's Website </h1>
-<br>
-<a href="https://lt233-production.herokuapp.com/Project/login.php" name="Login">Banking Simulation Login </a>
-<br>
+<h1>Home for HTML5 Canvas Game</h1>
+<h3><a href="modGame.html">Modified Game</a></h3>
+<h3><a href="origGame.html">Original Game</a></h3>
