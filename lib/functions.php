@@ -78,3 +78,49 @@ function getMessages() {
     return array();
 }
 //end flash message system
+
+function changeBalance($db, $src, $dest, $type, $balChange, $memo = '') {
+    $stmt = $db->prepare("SELECT balance from Accounts WHERE id = :id");
+    $stmt->execute([":id" => $src]);
+    $srcAcct = $stmt->fetch(PDO::FETCH_ASSOC);
+  
+    $stmt->execute([":id" => $dest]);
+    $destAcct = $stmt->fetch(PDO::FETCH_ASSOC);
+  
+    $transactions = $db->prepare(
+      "INSERT INTO Transactions (account_src, account_dest, balance_change, transaction_type, memo, expected_total)
+      VALUES (:account_src, :account_dest, :balance_change, :transaction_type, :memo, :expected_total)"
+    );
+    $accounts = $db->prepare(
+      "UPDATE Accounts SET balance = :balance WHERE id = :id"
+    );
+  
+    $balChange = abs($balChange);
+    $finalSrcBalace = $srcAcct['balance'] - $balChange;
+    $finalDestBalace = $destAcct['balance'] + $balChange;
+  
+    $transactions->execute([
+      ":account_src" => $src,
+      ":account_dest" => $dest,
+      ":balance_change" => -$balChange,
+      ":transaction_type" => $type,
+      ":memo" => $memo,
+      ":expected_total" => $finalSrcBalace
+    ]);
+  
+    $transactions->execute([
+      ":account_src" => $dest,
+      ":account_dest" => $src,
+      ":balance_change" => $balChange,
+      ":transaction_type" => $type,
+      ":memo" => $memo,
+      ":expected_total" => $finalDestBalace
+    ]);
+  
+    $accounts->execute([":balance" => $finalSrcBalace, ":id" => $src]);
+    $accounts->execute([":balance" => $finalDestBalace, ":id" => $dest]);
+  
+    return $transactions;
+  }
+  ?>
+  
