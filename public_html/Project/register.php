@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../../partials/nav.php");
+require_once(__DIR__ . "/partials/nav.php");
 if (isset($_POST["submit"])) {
     $email = se($_POST, "email", null, false);
     $username = trim(se($_POST, "username", null, false));
@@ -46,7 +46,7 @@ if (isset($_POST["submit"])) {
 }
 ?>
 <?php
-require_once(__DIR__ . "/../../partials/formstyles.php");
+require_once(__DIR__ . "/partials/formstyles.php");
 ?>
 <div class="container">
     <h1>Register</h1>
@@ -127,5 +127,5 @@ require_once(__DIR__ . "/../../partials/formstyles.php");
     }
 </script>
 <?php
-require_once(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/partials/flash.php");
 ?>

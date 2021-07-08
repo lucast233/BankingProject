@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../../partials/nav.php");
+require_once(__DIR__ . "/partials/nav.php");
 if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
@@ -8,9 +8,9 @@ if (!is_logged_in()) {
     .button {
         font: bold 13px Arial;
         text-decoration: none;
-        background-color: lightgrey;
+        background-color: #dddddd;
         color: black;
-        padding: 2px 6px 2px 6px;
+        padding: 6px 18px;
         border-top: 1px solid #CCCCCC;
         border-right: 1px solid #333333;
         border-bottom: 1px solid #333333;
@@ -34,13 +34,13 @@ if (!is_logged_in()) {
     <p>
         <a class="button" href="account_create.php"> Create Account</a> &nbsp;&nbsp;
         <a class="button" href="accounts.php"> My Accounts</a> &nbsp;&nbsp;
-        <a class="button" href="#"> Deposit</a> &nbsp;&nbsp;
-        <a class="button" href="#"> Withdraw</a> &nbsp;&nbsp;
-        <a class="button" href="#"> Transfer</a> &nbsp;&nbsp;
+        <a class="button" href="transactions.php?type=deposit"> Deposit</a> &nbsp;&nbsp;
+        <a class="button" href="transactions.php?type=withdraw"> Withdraw</a> &nbsp;&nbsp;
+        <a class="button" href="transactions.php?type=transfer"> Transfer</a> &nbsp;&nbsp;
     </p>
 </div>
 
 
 <?php
-require_once(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/partials/flash.php");
 ?>

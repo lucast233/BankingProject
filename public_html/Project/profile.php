@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../../partials/nav.php");
+require_once(__DIR__ . "/partials/nav.php");
 if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
@@ -87,7 +87,7 @@ $email = get_user_email();
 $username = get_username();
 ?>
 <?php
-require_once(__DIR__ . "/../../partials/formstyles.php");
+require_once(__DIR__ . "/partials/formstyles.php");
 ?>
 <div class="container">
     <form method="POST" onsubmit="return validate(this);">
@@ -167,5 +167,5 @@ require_once(__DIR__ . "/../../partials/formstyles.php");
     }
 </script>
 <?php
-require_once(__DIR__ . "/../../partials/flash.php");
+require_once(__DIR__ . "/partials/flash.php");
 ?>

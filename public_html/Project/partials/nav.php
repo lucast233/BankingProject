@@ -93,6 +93,13 @@ nav a:nth-child(3):before {
 nav a:nth-child(3):after {
     background-color: palevioletred;
 }
+nav a:nth-child(4):before {
+    background-color: black;
+}
+
+nav a:nth-child(4):after {
+    background-color: pink;
+}
 
 #indicator {
     position: absolute;
@@ -125,6 +132,10 @@ nav a:nth-child(2):hover ~ #indicator {
 nav a:nth-child(3):hover ~ #indicator {
     left: 70%;
     background: linear-gradient(130deg, purple, palevioletred);
+}
+nav a:nth-child(4):hover ~ #indicator {
+    left: 85%;
+    background: linear-gradient(130deg, black, pink);
 }
 
 #ytd-url {

@@ -40,6 +40,7 @@ function has_role($role) {
     }
     return false;
 }
+
 function get_username() {
     if (is_logged_in()) { //we need to check for login first because "user" key may not exist
         return se($_SESSION["user"], "username", "", false);

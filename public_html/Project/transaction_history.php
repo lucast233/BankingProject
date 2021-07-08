@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require_once __DIR__ . "/../../partials/nav.php";
+require_once __DIR__ . "/partials/nav.php";
 if (!is_logged_in()) {
   //this will redirect to login and kill the rest of this script (prevent it from executing)
   flash("You don't have permission to access this page");
@@ -24,17 +24,17 @@ if (isset($_GET["id"])) {
   $stmt = $db->prepare(
     "SELECT count(*) as total
     FROM Transactions
-    JOIN Accounts AS Src ON Transactions.act_src_id = Src.id
-    WHERE Transactions.act_src_id = :acct_id AND Src.user_id = :user
+    JOIN Accounts AS Src ON Transactions.account_src = Src.id
+    WHERE Transactions.account_src = :acct_id AND Src.user_id = :user
     ORDER BY Transactions.id DESC LIMIT 10"
   );
   $r = $stmt->execute([
     ":acct_id" => $id,
     ":user" => $user
   ]);
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  if($result){
-    $total = (int)$result["total"];
+  $results = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($results){
+    $total = (int)$results["total"];
   } else {
     $total = 0;
   }
@@ -44,17 +44,19 @@ if (isset($_GET["id"])) {
   $offset = ($page - 1) * $per_page;
 
   $stmt = $db->prepare(
-    "SELECT amount, action_type, memo, expected_total, created, Dest.account_number AS dest, Src.account_number AS src
+    "SELECT balance_change, transaction_type, memo, expected_total, Transactions.created, 
+    Dest.account_number AS dest, 
+    Src.account_number AS src
     FROM Transactions
-    JOIN Accounts AS Src ON Transactions.act_src_id = Src.id
-    JOIN Accounts AS Dest ON Transactions.act_dest_id = Dest.id
-    WHERE Transactions.act_src_id = :acct_id AND Src.user_id = :user
-    ORDER BY Transactions.id DESC LIMIT :offset,:count"
+    JOIN Accounts AS Src ON Transactions.account_src = Src.id
+    JOIN Accounts AS Dest ON Transactions.account_dest = Dest.id
+    WHERE Transactions.account_src = :acct_id AND Src.user_id = :user
+    ORDER BY Transactions.id DESC LIMIT :offset, :count"
   );
-  $stmt->bindValue(":acct_id", $id);
-  $stmt->bindValue(":user", $user);
-  $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
-  $stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+  $stmt->bindValue(':acct_id', $id);
+  $stmt->bindValue(':user', $user);
+  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+  $stmt->bindValue(':count', $per_page, PDO::PARAM_INT);
   $r = $stmt->execute();
   if ($r) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,16 +66,40 @@ if (isset($_GET["id"])) {
   }
 }
 ?>
-    <h3 class="text-center mt-4 mb-4">Transaction History</h3>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+
+  }
+  .pagination {text-align: center;}
+  li {
+    list-style: none;
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    padding: 15px;
+    display: inline;
+  }
+  tr:nth-child(even) {
+  background-color: #dddddd;
+  }
+</style>
+    <br>
+    <br>
 
 <?php if (count($results) > 0): ?>
-  <table class="table table-striped">
+  
+  <h3>Transaction History for <?php se(ucfirst(get_username())); ?></h3>
+  <a href="accounts.php"> Go Back</a>  <br> <br>
+  <table class="table table-striped" style="width: 100%">
     <thead class="thead-dark">
       <tr>  
         <th scope="col">Account Number (Source)</th>
-        <th scope="col">Account Number (Dest)</th>
+        <th scope="col">Account Number (Destination)</th>
         <th scope="col">Type</th>
-        <th scope="col">Change</th>
+        <th scope="col">Balance Change</th>
         <th scope="col">Memo</th>
         <th scope="col">Balance</th>
       </tr>
@@ -81,32 +107,20 @@ if (isset($_GET["id"])) {
     <tbody>
   <?php foreach ($results as $r): ?>
       <tr>
-        <td><?php se($r["src"]); ?></td>
+        <th><?php se($r["src"]); ?></th>
         <th scope="row"><?php se($r["dest"]); ?></th>
-        <td><?php se(ucfirst($r["action_type"])); ?></td>
-        <td>$<?php se($r["amount"]); ?></td>
+        <td><?php se(ucfirst($r["transaction_type"])); ?></td>
+        <td>$<?php se($r["balance_change"]); ?></td>
         <td><?php se($r["memo"]); ?></td>
         <td>$<?php se($r["expected_total"]); ?></td>
       </tr>
   <?php endforeach; ?>
     </tbody>
   </table>
-
-  <nav>
-    <ul class="pagination justify-content-center">
-        <li class="page-item <?php echo ($page - 1) < 1 ? "disabled" : ""; ?>">
-            <a class="page-link" href="?id=<?php se($id); ?>&page=<?php echo $page - 1; ?>" tabindex="-1">Previous</a>
-        </li>
-        <?php for($i = 0; $i < $total_pages; $i++): ?>
-          <li class="page-item <?php echo ($page-1) == $i ? "active" : ""; ?>"><a class="page-link" href="?id=<?php se($id); ?>&page=<?php echo ($i + 1); ?>"><?php echo ($i + 1); ?></a></li>
-        <?php endfor; ?>
-        <li class="page-item <?php echo ($page) >= $total_pages ? "disabled" : ""; ?>">
-            <a class="page-link" href="?id=<?php se($id); ?>&page=<?php echo $page + 1; ?>">Next</a>
-        </li>
-    </ul>
-  </nav>
 <?php else: ?>
-  <p>You don't have any accounts.</p>
+  <a href="accounts.php"> Go Back</a>  <br> <br>
+
+  <p>You don't have any transactions.</p>
 <?php endif; ?>
 
-<?php require __DIR__ . "/../../partials/flash.php"; ?>
+<?php require __DIR__ . "/partials/flash.php"; ?>

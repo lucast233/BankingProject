@@ -1,6 +1,6 @@
 <?php
 ob_start();
-require_once __DIR__ . "/../../partials/nav.php";
+require_once __DIR__ . "/partials/nav.php";
 if (!is_logged_in()) {
   //this will redirect to login and kill the rest of this script (prevent it from executing)
   flash("You don't have permission to access this page");
@@ -25,12 +25,22 @@ if ($r) {
 }
 ob_end_flush();
 ?>
+<style>
+  table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+  }
+  tr:nth-child(even) {
+  background-color: #dddddd;
+  }
+  </style>
     <br>
     <h3 class="text-center mt-4 mb-4">Accounts</h3>
 
     <?php if (count($results) > 0): ?>
-      <table class="table table-striped">
-        <thead class="thead-dark">
+      <table>
+        <thead>
           <tr>  
             <th scope="col">Account Number</th>
             <th scope="col">Account Type</th>
@@ -47,8 +57,8 @@ ob_end_flush();
               <br><small>APY: <?php se($r["APY"]); ?>%</small>
             <?php endif; ?>
             </td>
-            <td>$<?php se(abs($r["balance"])); ?><br><small>As of <?php se($r["modified"]); ?></small></td>
-            <td><a href="transactions_history.php?id=<?php se($r["id"]); ?>" class="btn btn-success">Transactions</a></td>
+            <td>$<?php se(($r["balance"])); ?><br><small>As of <?php se($r["modified"]); ?></small></td>
+            <td><a href="transaction_history.php?id=<?php se($r["id"]); ?>" class="btn btn-success">Transactions</a></td>
           </tr>
       <?php endforeach; ?>
         </tbody>
@@ -57,4 +67,4 @@ ob_end_flush();
       <p>You don't have any accounts.</p>
     <?php endif; ?>
 
-<?php require __DIR__ . "/../../partials/flash.php"; ?>
+<?php require __DIR__ . "/partials/flash.php"; ?>
