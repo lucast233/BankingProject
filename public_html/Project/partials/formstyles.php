@@ -12,7 +12,7 @@ label {
 }
 input[type=submit] {
   background-color: #4CAF50;
-  color: white;
+  color: black;
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
