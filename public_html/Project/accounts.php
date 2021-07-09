@@ -14,7 +14,9 @@ $stmt = $db->prepare(
   FROM Accounts
   JOIN Users ON Accounts.user_id = Users.id
   WHERE Users.id = :q AND active = 1
-  ORDER BY Accounts.id"
+  ORDER BY Accounts.id
+  LIMIT 5"
+  
 );
 $r = $stmt->execute([":q" => $user]);
 if ($r) {
