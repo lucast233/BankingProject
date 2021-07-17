@@ -12,7 +12,7 @@ Your Name: Lucas Terrone
 
 Milestone Features:
 	Milestone 1:
-- [x] User will be able to register a new account
+- [x] [06/30/21] User will be able to register a new account --https://github.com/lucast52501/IT202450/pull/5
   - Form Fields
     - [x] Username, email, password, (other fields optional)
     - [x] Email is required and must be validated
@@ -25,7 +25,7 @@ Milestone Features:
   - [x] Username should be unique
   - [x] System should let user know if username or email is taken and allow the user to correct the error without wiping/clearing the form
     - The only fields that may be cleared are the password fields
-- [x] User will be able to login to their account (given they enter the correct credentials)
+- [x] [06/30/21] User will be able to login to their account (given they enter the correct credentials) -- https://github.com/lucast52501/IT202450/pull/5
   - Form
     - [x] User can login with email or username
       - This can be done as a single field or as two separate fields
@@ -35,27 +35,27 @@ Milestone Features:
   - [x] User will be directed to a landing page upon login
     - This is a protected page (non-logged in users shouldn’t have access)
     - This can be home, profile, a dashboard, etc
-  - [x] User will be able to logout
+  - [x] [06/30/21] User will be able to logout -- https://github.com/lucast52501/IT202450/pull/5
     - [x] Logging out will redirect to login page
     - [x] User should see a message that they’ve successfully logged out
     - [x] Session should be destroyed (so the back button doesn’t allow them access back in)
-  - [x] Basic security rules implemented
+  - [x] [06/30/21] Basic security rules implemented -- https://github.com/lucast52501/IT202450/pull/5
     - Authentication:
       - [x] Function to check if user is logged in
       - [x] Function should be called on appropriate pages that only allow logged in users
     - Roles/Authorization:
       - [x] Have a roles table (id, name, description, active, modified
-  - [x] Basic Roles implemented
+  - [x] [06/30/21] Basic Roles implemented -- https://github.com/lucast52501/IT202450/pull/5
     - [x] Have a Roles table	(id, name, description, is_active, modified, created)
     - [x] Have a User Roles table (id, user_id, role_id, is_active, created, modified)
     - [x] Include a function to check if a user has a specific role (we won’t use it for this milestone but it should be usable in the future)
-  - [x] Site should have basic styles/theme applied everything should be styled
+  - [x] [06/30/21] Site should have basic styles/theme applied everything should be styled -- https://github.com/lucast52501/IT202450/pull/5
     - I.e., forms/input, navigation bar, etc
-  - [x] Any output messages/errors should be “user friendly”
+  - [x] [06/30/21] Any output messages/errors should be “user friendly” -- https://github.com/lucast52501/IT202450/pull/5
     - [x] Any technical errors or debug output displayed will result in a loss of points
-  - [x] User will be able to see their profile
+  - [x] [06/30/21] User will be able to see their profile -- https://github.com/lucast52501/IT202450/pull/5
     - Email, username, etc
-  - [x] User will be able to edit their profile
+  - [x] [06/30/21] User will be able to edit their profile -- https://github.com/lucast52501/IT202450/pull/5
     - [x] Changing username/email should properly check to see if it’s available before allowing the change
     - [x] Any other fields should be properly validated
     - [x] Allow password reset (only if the existing correct password is provided)
