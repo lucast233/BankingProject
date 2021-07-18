@@ -118,19 +118,19 @@ ob_end_flush();
 <form method="POST">
   <div>
     <label for="email">Email Address</label>
-    <input type="email" class="form-control" id="email" name="email" maxlength="100" value="<?php safer_echo(get_user_email()); ?>">
+    <input type="email" class="form-control" id="email" name="email" maxlength="100" value="<?php se(get_user_email()); ?>">
   </div>
   <div>
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" name="username" maxlength="60" value="<?php safer_echo(get_username()); ?>">
+    <input type="text" class="form-control" id="username" name="username" maxlength="60" value="<?php se(get_username()); ?>">
   </div>
   <div>
     <label for="fname">First Name</label>
-    <input type="text" class="form-control" id="fname" name="fname" maxlength="60" value="<?php safer_echo(get_fname());  ?>">
+    <input type="fname" class="form-control" id="fname" name="fname" maxlength="60" value="<?php se(get_fname());  ?>">
   </div>
   <div>
     <label for="lname">Last Name</label>
-    <input type="text" class="form-control" id="lname" name="lname" maxlength="60" value="<?php safer_echo(get_lname());?>">
+    <input type="lname" class="form-control" id="lname" name="lname" maxlength="60" value="<?php se(get_lname());  ?>">
   </div>
 <div>
     <label for="privacy">Privacy</label>

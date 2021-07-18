@@ -1,37 +1,66 @@
 <?php
 
 require_once __DIR__ . "/partials/nav.php";
-if (!is_logged_in()) {
+if (!is_logged_in()) 
+{
   //this will redirect to login and kill the rest of this script (prevent it from executing)
   flash("You don't have permission to access this page");
   die(header("Location: login.php"));
 }
-
 $results = [];
+$db = getDB();
+
 if (isset($_GET["id"])) {
+  
+
   $id = $_GET["id"];
   $user = get_user_id();
-  if(isset($_GET["page"])){
+  
+  $filter= [];
+  $transaction_type=$_GET['transaction_type'] ?? "";
+  $from = $_GET['from'] ?? "";
+  $to = $_GET['to'] ?? "";
+  if($transaction_type) {
+    $filter[] = 'transaction_type=:transaction_type';
+  }
+  if($from) {
+    $filter[] = 'Transactions.created >=:from';
+  }
+  if($to) {
+    $filter[] = 'Transactions.created <=:to';
+  }
+  if(sizeof($filter)) {
+    $filter=' AND '.implode(' AND ',$filter);
+  }
+  else {
+    $filter='';
+  }
+
+  if(isset($_GET["page"])) {
     $page = (int)$_GET["page"];
-  } else {
+  } 
+  else {
     $page = 1;
   }
-  $db = getDB();
 
   $stmt = $db->prepare(
     "SELECT count(*) as total
     FROM Transactions
     JOIN Accounts AS Src ON Transactions.account_src = Src.id
     WHERE Transactions.account_src = :acct_id AND Src.user_id = :user
-    ORDER BY Transactions.id DESC LIMIT 10"
+    "
+    .$filter
+  
   );
-  $r = $stmt->execute([
-    ":acct_id" => $id,
-    ":user" => $user
-  ]);
-  $results = $stmt->fetch(PDO::FETCH_ASSOC);
-  if($results){
-    $total = (int)$results["total"];
+  $stmt->bindValue(":acct_id", $id);
+  $stmt->bindValue(":user", $user);
+  if($transaction_type) $stmt->bindValue(":transaction_type", $transaction_type,PDO::PARAM_STR);
+  if($from)$stmt->bindValue(":from", $from,PDO::PARAM_STR);
+  if($to)$stmt->bindValue(":to", $to,PDO::PARAM_STR);
+  $r = $stmt->execute();
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  if($result) {
+    $total = (int)$result["total"];
   } else {
     $total = 0;
   }
@@ -39,37 +68,36 @@ if (isset($_GET["id"])) {
   $per_page = 10;
   $total_pages = ceil($total / $per_page);
   $offset = ($page - 1) * $per_page;
+  
 
-  $stmt = $db->prepare(
-    "SELECT balance_change, transaction_type, memo, expected_total, Transactions.created, 
-    Dest.account_number AS dest, 
-    Src.account_number AS src
-    FROM Transactions
-    JOIN Accounts AS Src ON Transactions.account_src = Src.id
-    JOIN Accounts AS Dest ON Transactions.account_dest = Dest.id
-    WHERE Transactions.account_src = :acct_id AND Src.user_id = :user
-    ORDER BY Transactions.id DESC LIMIT :offset, :count"
-  );
-  $stmt->bindValue(':acct_id', $id);
-  $stmt->bindValue(':user', $user);
-  $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-  $stmt->bindValue(':count', $per_page, PDO::PARAM_INT);
+  $query= "SELECT SQL_CALC_FOUND_ROWS balance_change, transaction_type, memo, expected_total, Transactions.created, Dest.account_number
+  AS dest, Src.account_number AS src
+  FROM Transactions
+  JOIN Accounts AS Src ON Transactions.account_src = Src.id
+  JOIN Accounts AS Dest ON Transactions.account_dest = Dest.id
+  WHERE Transactions.account_src = :acct_id AND Src.user_id = :user
+  "
+  .$filter.
+  "
+  ORDER BY Transactions.id DESC LIMIT :offset,:count";
+  $stmt = $db->prepare($query);
+  $stmt->bindValue(":acct_id", $id);
+  $stmt->bindValue(":user", $user);
+  $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+  $stmt->bindValue(":count", $per_page, PDO::PARAM_INT);
+  if($transaction_type) $stmt->bindValue(":transaction_type", $transaction_type,PDO::PARAM_STR);
+  if($from)$stmt->bindValue(":from", $from,PDO::PARAM_STR);
+  if($to)$stmt->bindValue(":to", $to,PDO::PARAM_STR);
   $r = $stmt->execute();
-  if ($r) {
+  if ($r) 
+  {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  } else {
+  } else 
+  {
     $results = [];
     flash("There was a problem fetching the results");
   }
 }
-
-if (isset($_POST["submit"])) {
-  $from=date('Y-m-d',strtotime($_POST['from']));
-  $to=date('Y-m-d',strtotime($_POST['to']));
-  
-}
-
-
 ?>
 <style>
   table, th, td {
@@ -98,41 +126,40 @@ if (isset($_POST["submit"])) {
   
   <h3>Transaction History for <?php se(ucfirst(get_username())); ?></h3>
   <br>
-<form method="POST">
-<div class="container overflow-hidden">
-  <div class="row gy-5">
-            <div class="col-6">
-                <label for="from">Start Date: </label>
-            </div>
-            <div class="col-6">
-                <label for="to">End Date: </label>
-            </div>
-        </div>
-  <div class="row gy-5">
-    <div class="col-6">
-      <input type="date" id="start" name="from">
-    </div>
-    <div class="col-6">
-      <input type="date" id="end" name="to">
-    </div>
+  <form action="" method="GET">
+    <div class="date">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>From date</label> 
+            <input type="date" name="from" class="form-control" value="<?php echo $from?>">
+          </div>
+        </div> 
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>To date</label> 
+            <input type="date" name="to" class="form-control" value="<?php echo $to ?>">
+          </div>
+        </div> 
+        <div class="col-md-4"> <br>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary"> click to filter</button>
+            <a  href="?id=<?php echo $id ?>" class="btn btn-info"> Reset</a>
+          </div>
+        </div> 
+      </div>
+  </div> <br>
+  <div class="typeContainer">
+    <label for="transaction_type"> Filter Transaction Type:</label>
+      <select id="transaction_type" name="transaction_type">
+        <option value="" >Select Type</option>
+        <option value="Deposit" <?php echo ($transaction_type=='Deposit'?'SELECTED':'' ) ?>>Deposit</option>
+        <option value="Withdraw" <?php echo ($transaction_type=='Withdraw'?'SELECTED':'' ) ?>>Withdraw</option>
+        <option value="Ext-transfer" <?php echo ($transaction_type=='Ext-Transfer'?'SELECTED':'' ) ?>>Ext-Transfer</option>
+            </select>
   </div>
-  <div class="row gy-5">
-    <div class=col-6>
-    <label for="type">Filter by Transaction type: </label>
-      <select name="type" onchange="showUser(this.value)">
-        <option value="">--Please choose an option--</option>
-        <option value="Withdraw">Withdraw</option>
-        <option value="Deposit">Deposit</option>
-        <option value="Transfer">Transfer</option>
-        <option value="ext-transfer">Ext Transfer</option>
-      </select>
-    </div>
-  </div>
-</div>
-<div>
-  <input type="submit" name="submit" value="Filter" />
-</div>
-</form>
+  <input type="hidden" name="id" value="<?php echo $id ?>" />
+  </form>
 <br> <br> 
 <table class="table table-striped" style="width: 100%">
     <thead class="thead-dark">
@@ -158,6 +185,14 @@ if (isset($_POST["submit"])) {
   <?php endforeach; ?>
     </tbody>
 </table>
+<?php  
+$filter =[
+  'from ='.$from,
+  'to ='.$to,
+  'transaction_type ='.$transaction_type,
+];
+$filter ='&'.implode('&',$filter);
+?>
   <nav>
     <ul class="pagination justify-content-center">
         <li class="page-item <?php echo ($page - 1) < 1 ? "disabled" : ""; ?>">

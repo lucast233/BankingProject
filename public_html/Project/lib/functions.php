@@ -66,21 +66,20 @@ function get_user_id() {
     return false;
 }
 function get_fname() {
-    if (is_logged_in() && isset($_SESSION["user"]["id"])) { //we need to check for login first because "user" key may not exist
+    if (is_logged_in() && isset($_SESSION["user"]["fname"])) { //we need to check for login first because "user" key may not exist
         return $_SESSION["user"]["fname"];
     }
-    return -1;
+    return "";
     }
-
 function get_lname(){
-    if (is_logged_in() && isset($_SESSION["user"]["id"])) {
+    if (is_logged_in() && isset($_SESSION["user"]["lname"])) {
         return $_SESSION["user"]["lname"];
   }
-  return -1;
+  return "";
 }
 function get_privacy() {
   if (is_logged_in()) {
-    return $_SESSION["user"]["privacy"];
+    return $_SESSION["user"]["privacy"] ?? null;
   }
   return -1;
 }
