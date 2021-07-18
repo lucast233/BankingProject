@@ -15,160 +15,79 @@ session_set_cookie_params([
 ]);
 session_start();
 require_once(__DIR__ . "/../lib/functions.php");
-
 ?>
-<style>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="//cdn.jsdelivr.net" rel="preconnect">
+    <title>Lucas' Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-nav {
-    margin: 0;
-    background-color: #292929;
-    overflow: hidden;
-}
+	<!-- Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-nav {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    display: table;
-    margin: 0 auto;
-}
-
-nav a {
-    position: relative;
-    width: 33.333%;
-    display: table-cell;
-    text-align: center;
-    color: #949494;
-    text-decoration: none;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    padding: 10px 20px;
-    transition: 0.2s ease color;
-}
-
-nav a:before, nav a:after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    transition: 0.2s ease transform;
-}
-
-nav a:before {
-    top: 0;
-    left: 10px;
-    width: 6px;
-    height: 6px;
-}
-
-nav a:after {
-    top: 5px;
-    left: 18px;
-    width: 4px;
-    height: 4px
-}
-
-nav a:nth-child(1):before {
-    background-color: yellow;
-}
-
-nav a:nth-child(1):after {
-    background-color: red;
-}
-
-nav a:nth-child(2):before {
-    background-color: #00e2ff;
-}
-
-nav a:nth-child(2):after {
-    background-color: #89ff00;
-}
-
-nav a:nth-child(3):before {
-    background-color: purple;
-}
-
-nav a:nth-child(3):after {
-    background-color: palevioletred;
-}
-nav a:nth-child(4):before {
-    background-color: black;
-}
-
-nav a:nth-child(4):after {
-    background-color: pink;
-}
-
-#indicator {
-    position: absolute;
-    left: 5%;
-    bottom: 0;
-    width: 30px;
-    height: 3px;
-    background-color: #fff;
-    border-radius: 5px;
-    transition: 0.2s ease left;
-}
-
-nav a:hover {
-    color: #fff;
-}
-
-nav a:hover:before, nav a:hover:after {
-    transform: scale(1);
-}
-
-nav a:nth-child(1):hover ~ #indicator {
-    background: linear-gradient(130deg, yellow, red);
-}
-
-nav a:nth-child(2):hover ~ #indicator {
-    left: 34%;
-    background: linear-gradient(130deg, #00e2ff, #89ff00);
-}
-
-nav a:nth-child(3):hover ~ #indicator {
-    left: 70%;
-    background: linear-gradient(130deg, purple, palevioletred);
-}
-nav a:nth-child(4):hover ~ #indicator {
-    left: 85%;
-    background: linear-gradient(130deg, black, pink);
-}
-
-#ytd-url {
-  display: block;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  padding: 10px 14px;
-  margin: 20px;
-  color: #fff;
-  font-family: Arial;
-  font-size: 14px;
-  text-decoration: none;
-  background-color: #000;
-  border-radius: 4px;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
-  z-index: 125;
-}
-</style>
-        <nav>
-            <?php if (is_logged_in()) : ?>
-                <a href="home.php">Home</a>
-            <?php endif; ?>
-            <?php if (!is_logged_in()) : ?>
-                <a href="login.php">Login</a>
-                <a href="register.php">Register</a>
-            <?php endif; ?>
-            <?php if (has_role("Admin")) : ?>
-                <a href="#">Admin Stuff</a>
-            <?php endif; ?>
-            <?php if (is_logged_in()) : ?>
-                <a href="profile.php">Profile</a>
-                <a href="logout.php">Logout</a>
-            <?php endif; ?>
-            <div id="indicator"></div>
-        </nav>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <?php if (!is_logged_in()): ?>
+                    <li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>
+                <?php endif; ?>
+                <?php if (is_logged_in()): ?>
+                    <li class="nav-item"><a class="nav-link" href="home.php">Home</a></li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="accounts.php" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Accounts
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="accountsDropdown">
+                        <a class="dropdown-item" href="accounts.php">View Accounts</a>
+                            <a class="dropdown-item" href="account_create.php">Create Account</a>
+                            <a class="dropdown-item" href="loan_create.php">Take out Loan</a>
+                            <a class="dropdown-item" href="account_close.php">Close Account</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="transactions.php" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Transaction
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="transactions.php?type=deposit">Deposit</a>
+                            <a class="dropdown-item" href="transactions.php?type=withdraw">Withdraw</a>
+                            <a class="dropdown-item" href="transactions.php?type=transfer">Transfer</a>
+                            <a class="dropdown-item" href="transaction_ext.php">External Transaction</a>
+                        </ul>
+                    </li>
+                </ul>
+                <?php endif; ?>
+                <?php if (is_logged_in()): ?>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                <?php if (has_role("Admin")): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="test/test_create_accounts.php">Create Account</a>
+                            <a class="dropdown-item" href="test/test_list_accounts.php">View Account</a>
+                            <a class="dropdown-item" href="test/test_create_transactions.php">Create Transaction</a>
+                            <a class="dropdown-item" href="test/test_list_transactions.php">View Transactions</a>
+                        </div>
+                    </li>
+                <?php endif; ?>
+                <?php endif; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">

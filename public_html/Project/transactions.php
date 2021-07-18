@@ -94,6 +94,7 @@ require_once(__DIR__ . "/partials/formstyles.php");
   <li><a <?php echo $type == 'deposit' ? 'active' : ''; ?> href="?type=deposit">Deposit</a></li>
   <li><a <?php echo $type == 'withdraw' ? 'active' : ''; ?> href="?type=withdraw">Withdraw</a></li>
   <li><a <?php echo $type == 'transfer' ? 'active' : ''; ?> href="?type=transfer">Transfer</a></li>
+  <li><a href="transaction_ext.php">Extrenal Transactions</a></li>
 </ul> 
 <div class="container">
 <form method="POST">

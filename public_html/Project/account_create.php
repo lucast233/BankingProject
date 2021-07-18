@@ -51,16 +51,11 @@
     require_once(__DIR__ . "/partials/formstyles.php");
 
 ?>
-<style>
-    form {
-        text-indent: 12;
-    }
-
-</style>
+<body>
 <br>
 <br>
-<div class="container">
-<h3>&nbsp; Create New Account</h3>
+<div class="fcontainer">
+<h3 class="text-center mt-3 mb-3">Create New Account</h3>
 <form method="POST">
     <div class="row">
         <div class="col-25">
@@ -87,10 +82,13 @@
         </div>
     </div>
     <div>
+        <div>
         <input type="submit" name="save" value="Create"></input>
+    </div>
     </div>
 </form>
 </div>
+</body>
 <?php
 require_once(__DIR__ . "/partials/flash.php");
 ?>

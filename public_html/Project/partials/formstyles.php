@@ -22,7 +22,7 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #45a049;
 }
-.container {
+.fcontainer {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
