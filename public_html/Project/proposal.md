@@ -115,7 +115,7 @@ Milestone Features:
 
 
 	Milestone 3:
-	- [x] User will be able to transfer between their accounts
+	- [x] [07/18/21] User will be able to transfer between their accounts -- https://github.com/lucast52501/IT202450/pull/30
 		- Form should include a dropdown first AccountSrc and a dropdown for AccountDest (only accounts the user owns; no world account)
 		- Form should include a field for a positive numeric value
 		- System shouldn’t allow the user to transfer more funds than what’s available in AccountSrc
@@ -124,13 +124,13 @@ Milestone Features:
 			- These will reflect in the transaction history page
 		- Show appropriate user-friendly error messages
 		- Show user-friendly success messages
-	- [ ] Transaction History page
+	- [x] [07/18/21] Transaction History page -- https://github.com/lucast52501/IT202450/pull/30
 		- Will show the latest 10 transactions by default
 		- User will be able to filter transactions between two dates
 		- User will be able to filter transactions by type (deposit, withdraw, transfer)
 		- Transactions should paginate results after the initial 10
-	- [ ] User’s profile page should record/show First and Last name
-	- [ ] User will be able to transfer funds to another user’s account
+	- [x] [07/18/21] User’s profile page should record/show First and Last name -- https://github.com/lucast52501/IT202450/pull/30
+	- [x] [07/18/21] User will be able to transfer funds to another user’s account -- https://github.com/lucast52501/IT202450/pull/30
 		- Form should include a dropdown of the current user’s accounts (as AccountSrc)
 		- Form should include a field for the destination user’s last name
 		- Form should include a field for the last 4 digits of the destination user’s account number (to lookup AccountDest)
@@ -143,6 +143,7 @@ Milestone Features:
 		- Transaction will be recorded with the type as “ext-transfer”
 		- Each transaction is recorded as a transaction pair in the Transaction table
 			- These will reflect in the transaction history page
+	
 	Milestone 4:
 	- [ ] User can set their profile to be public or private (will need another column in Users table)
 		- If public, hide email address from other users

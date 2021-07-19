@@ -24,7 +24,7 @@ if (!is_logged_in()) {
     }
 </style>
 
-<div>
+<div class="container-fluid">
     <br>
     <h1>Home</h1>
     <h2>Welcome, <?php se(get_username()); ?>!</h2>

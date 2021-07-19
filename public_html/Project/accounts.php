@@ -38,10 +38,10 @@ ob_end_flush();
   }
   </style>
     <br>
-    <h3 class="text-center mt-4 mb-4">Accounts</h3>
+    <h3 class="text-center mt-3 mb-3">Accounts</h3>
 
     <?php if (count($results) > 0): ?>
-      <table>
+      <table class="table table-striped table-hover">
         <thead>
           <tr>  
             <th scope="col">Account Number</th>

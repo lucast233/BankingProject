@@ -1,56 +1,104 @@
 <?php
-require_once(__DIR__ . "/partials/nav.php");
+require_once __DIR__ . "/partials/nav.php";
 if (isset($_POST["submit"])) {
-    $email = se($_POST, "email", null, false);
-    $username = trim(se($_POST, "username", null, false));
-    $password = trim(se($_POST, "password", null, false));
-    $confirm = trim(se($_POST, "confirm", null, false));
+  $email = null;
+  $password = null;
+  $confirm = null;
+  $username = null;
+  $fname = null;
+  $lname = null;
+  if (isset($_POST["email"])) {
+    $email = $_POST["email"];
+  }
+  if (isset($_POST["password"])) {
+    $password = $_POST["password"];
+  }
+  if (isset($_POST["confirm"])) {
+    $confirm = $_POST["confirm"];
+  }
+  if (isset($_POST["username"])) {
+    $username = $_POST["username"];
+  }
+  if (isset($_POST["fname"])) {
+    $fname = $_POST["fname"];
+  }
+  if (isset($_POST["lname"])) {
+    $lname = $_POST["lname"];
+  }
+  $isValid = true;
+  //check if passwords match on the server side
+  if ($password != $confirm) {
+    flash("Passwords don't match!");
+    $isValid = false;
+  }
+  if (!isset($email) || !isset($password) || !isset($confirm)) {
+    $isValid = false;
+  }
+  //TODO other validation as desired, remember this is the last line of defense
+  if ($isValid) {
+    $hash = password_hash($password, PASSWORD_BCRYPT);
 
-    $isValid = true;
-    if (!isset($email) || !isset($username) || !isset($password) || !isset($confirm)) {
-        flash("Must provide email, username, password, and confirm password", "warning");
-        $isValid = false;
-    }
-
-    if ($password !== $confirm) {
-        flash("Passwords don't match", "warning");
-        $isValid = false;
-    }
-    if (strlen($password) < 3) {
-        flash("Password must be 3 or more characters", "warning");
-        $isValid = false;
-    }
-    $email = sanitize_email($email);
-    if (!is_valid_email($email)) {
-        flash("Invalid email", "warning");
-        $isValid = false;
-    }
-    if ($isValid) {
-        //do our registration
-        $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users (email, username, password) VALUES (:email, :username, :password)");
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        try {
-            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
-            flash("You've succesfully registered, please login now.");
-            die(header("Location: login.php"));
-        } catch (PDOException $e) {
-            $code = se($e->errorInfo, 0, "00000", false);
-            if ($code === "23000") {
-                flash("An account with this email already exists", "danger");
-            } else {
-                echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
-            }
+    $db = getDB();
+    if (isset($db)) {
+      //here we'll use placeholders to let PDO map and sanitize our data
+      $stmt = $db->prepare(
+        "INSERT INTO Users(email, username, password, fname, lname) VALUES(:email,:username, :password, :fname, :lname)"
+      );
+      //here's the data map for the parameter to data
+      $params = [
+        ":email" => $email,
+        ":username" => $username,
+        ":password" => $hash,
+        ":fname" => $fname,
+        ":lname" => $lname
+      ];
+      $r = $stmt->execute($params);
+      $e = $stmt->errorInfo();
+      if ($e[0] == "00000") {
+        flash("Successfully registered! Please login.");
+      } else {
+        if ($e[0] == "23000") {
+          //code for duplicate entry
+          flash("Username or email already exists!");
+        } else {
+          flash("An error occurred, please try again.");
         }
+      }
     }
+  } else {
+    flash("There was a validation issue.");
+  }
+}
+//safety measure to prevent php warnings
+if (!isset($email)) {
+  $email = "";
+}
+if (!isset($username)) {
+  $username = "";
 }
 ?>
 <?php
 require_once(__DIR__ . "/partials/formstyles.php");
 ?>
-<div class="container">
+<div class="fcontainer">
     <h1>Register</h1>
     <form method="POST" onsubmit="return validate(this);">
+        <div class="row">
+            <div class="col-25">
+                <label for="fname">First Name: </label>
+            </div>
+            <div class="col-25">
+            <input type="fname" name="fname" id="fname" required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+            <label for="lname">Last Name: </label>
+            </div>
+            <div class="col-25">
+                <input type="lname" name="lname" id="lname" required />
+            </div>
+        </div>
         <div class="row">
             <div class="col-25">
                 <label for="email">Email: </label>

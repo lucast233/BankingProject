@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__ . "/db.php");
-
 function se($v, $k = null, $default = "", $isEcho = true) {
     if (is_array($v) && isset($k) && isset($v[$k])) {
         $returnValue = $v[$k];
@@ -40,7 +39,14 @@ function has_role($role) {
     }
     return false;
 }
-
+function safer_echo($var)
+{
+  if (!isset($var)) {
+    echo "";
+    return;
+  }
+  echo htmlspecialchars($var, ENT_QUOTES, "UTF-8");
+}
 function get_username() {
     if (is_logged_in()) { //we need to check for login first because "user" key may not exist
         return se($_SESSION["user"], "username", "", false);
@@ -59,6 +65,30 @@ function get_user_id() {
     }
     return false;
 }
+function get_fname() {
+    if (is_logged_in() && isset($_SESSION["user"]["fname"])) { //we need to check for login first because "user" key may not exist
+        return $_SESSION["user"]["fname"];
+    }
+    return "";
+    }
+function get_lname(){
+    if (is_logged_in() && isset($_SESSION["user"]["lname"])) {
+        return $_SESSION["user"]["lname"];
+  }
+  return "";
+}
+function get_privacy() {
+  if (is_logged_in()) {
+    return $_SESSION["user"]["privacy"] ?? null;
+  }
+  return -1;
+}
+function getURL($path) {
+    if(substr($path, 0, 1) == '/') {
+      return $path;
+    }
+    return $_SERVER['CONTEXT_PREFIX'] . "/IT202450/Project/$path";
+  }
 //flash message system
 function flash($msg = "", $color = "info") {
     $message = ["text" => $msg, "color" => $color];
