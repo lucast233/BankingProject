@@ -143,6 +143,7 @@ Milestone Features:
 		- Transaction will be recorded with the type as “ext-transfer”
 		- Each transaction is recorded as a transaction pair in the Transaction table
 			- These will reflect in the transaction history page
+	
 	Milestone 4:
 	- [ ] User can set their profile to be public or private (will need another column in Users table)
 		- If public, hide email address from other users
