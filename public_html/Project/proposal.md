@@ -124,12 +124,12 @@ Milestone Features:
 			- These will reflect in the transaction history page
 		- Show appropriate user-friendly error messages
 		- Show user-friendly success messages
-	- [ ] Transaction History page --
+	- [x] [07/18/21] Transaction History page -- https://github.com/lucast52501/IT202450/pull/30
 		- Will show the latest 10 transactions by default
 		- User will be able to filter transactions between two dates
 		- User will be able to filter transactions by type (deposit, withdraw, transfer)
 		- Transactions should paginate results after the initial 10
-	- [ ] User’s profile page should record/show First and Last name --
+	- [x] [07/18/21] User’s profile page should record/show First and Last name -- https://github.com/lucast52501/IT202450/pull/30
 	- [x] [07/18/21] User will be able to transfer funds to another user’s account -- https://github.com/lucast52501/IT202450/pull/30
 		- Form should include a dropdown of the current user’s accounts (as AccountSrc)
 		- Form should include a field for the destination user’s last name
