@@ -107,7 +107,7 @@ if (isset($_GET["id"])) {
 
   }
   .pagination {text-align: center;}
-  li {
+  .page-item {
     list-style: none;
     display: inline-block;
     text-align: center;
@@ -143,7 +143,7 @@ if (isset($_GET["id"])) {
         </div> 
         <div class="col-md-4"> <br>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary"> click to filter</button>
+            <button type="submit" class="btn btn-primary"> Filter</button>
             <a  href="?id=<?php echo $id ?>" class="btn btn-info"> Reset</a>
           </div>
         </div> 
@@ -156,7 +156,8 @@ if (isset($_GET["id"])) {
         <option value="Deposit" <?php echo ($transaction_type=='Deposit'?'SELECTED':'' ) ?>>Deposit</option>
         <option value="Withdraw" <?php echo ($transaction_type=='Withdraw'?'SELECTED':'' ) ?>>Withdraw</option>
         <option value="Ext-transfer" <?php echo ($transaction_type=='Ext-Transfer'?'SELECTED':'' ) ?>>Ext-Transfer</option>
-            </select>
+        <option value="Loan" <?php echo ($transaction_type=='Loan'?'SELECTED':'' ) ?>>Loan</option>
+      </select>
   </div>
   <input type="hidden" name="id" value="<?php echo $id ?>" />
   </form>

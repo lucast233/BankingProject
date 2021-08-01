@@ -7,41 +7,44 @@ if (!is_logged_in()) {
   die(header("Location: login.php"));
 }
 
-$db = getDB();
-$user = get_user_id();
-$stmt = $db->prepare(
+$d_query = 
   "SELECT Accounts.id, account_number, account_type, balance, modified, APY
   FROM Accounts
   JOIN Users ON Accounts.user_id = Users.id
   WHERE Users.id = :q AND active = 1
-  ORDER BY Accounts.id
-  LIMIT 5"
-  
-);
-$r = $stmt->execute([":q" => $user]);
-if ($r) {
-  $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} else {
-  $results = [];
-  flash("There was a problem fetching the results");
+  ORDER BY Users.id
+  "
+;
+$params = [];
+$params[":q"] = get_user_id();
+
+$per_page = 5;
+
+$results = paginate($d_query, $params, $per_page);
+
+$total_pages = ceil($total_records / $per_page);
+$options = [];
+$query = "SELECT DISTINCT account_type from Accounts";
+$stmt = $db->prepare($query);
+try {
+  $stmt->execute();
+  $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  if ($r) {
+      $options = $r;
+  }
+} catch (PDOException $e) {
+  error_log("Error getting unique reasons: " . var_export($e->errorInfo, true));
 }
+
 ob_end_flush();
 ?>
-<style>
-  table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    padding: 10px;
-  }
-  tr:nth-child(even) {
-  background-color: #dddddd;
-  }
-  </style>
-    <br>
-    <h3 class="text-center mt-3 mb-3">Accounts</h3>
 
+    <br>
+    <div class="container-fluid">
+    <div>
+    <h3 class="text-center mt-3 mb-3">Accounts</h3>
     <?php if (count($results) > 0): ?>
-      <table class="table table-striped table-hover">
+      <table class="table table-bordered table-striped table-hover">
         <thead>
           <tr>  
             <th scope="col">Account Number</th>
@@ -65,8 +68,11 @@ ob_end_flush();
       <?php endforeach; ?>
         </tbody>
       </table>
-    <?php else: ?>
-      <p>You don't have any accounts.</p>
-    <?php endif; ?>
-
+<?php else: ?>
+  <p>You don't have any accounts.</p>
+<?php endif; ?>
+  <div>
+    <?php include(__DIR__ . "/partials/pagination.php"); ?>
+  </div>
+</div>
 <?php require __DIR__ . "/partials/flash.php"; ?>

@@ -3,8 +3,15 @@ require_once(__DIR__ . "/partials/nav.php");
 if (isset($_POST["submit"])) {
     $email = se($_POST, "email", null, false);
     $password = trim(se($_POST, "password", null, false));
+    $is_active = se($_POST, "is_active", null, false);
 
     $isValid = true;
+    $db = getDB();
+
+    if ($is_active === 0) {
+        flash("Sorry, your account is no longer active", "danger");
+        $isValid = false;
+    }
     if (!isset($email) || !isset($password)) {
         flash("Must provide email and password", "warning");
         $isValid = false;
@@ -18,11 +25,8 @@ if (isset($_POST["submit"])) {
         flash("Invalid email", "warning");
         $isValid = false;
     }
+
     if ($isValid) {
-        //do our registration
-        $db = getDB();
-        //$stmt = $db->prepare("INSERT INTO Users (email, password) VALUES (:email, :password)");
-        //$hash = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as 'username', password from Users where email = :email or username = :email LIMIT 1");
         try {
             $stmt->execute([":email" => $email]);
@@ -32,21 +36,17 @@ if (isset($_POST["submit"])) {
                 if (password_verify($password, $upass)) {
                     flash("Login successful", "success");
                     unset($user["password"]);
-                    //save user info
                     $_SESSION["user"] = $user;
-                    //lookup roles assigned to this user
                     $stmt = $db->prepare("SELECT Roles.name FROM Roles 
                     JOIN UserRoles on Roles.id = UserRoles.role_id 
                     where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
                     $stmt->execute([":user_id" => $user["id"]]);
                     $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    //save roles or empty array
                     if ($roles) {
                         $_SESSION["user"]["roles"] = $roles;
                     } else {
                         $_SESSION["user"]["roles"] = [];
                     }
-                    //echo "<pre>" . var_export($_SESSION, true) . "</pre>";
                     die(header("Location: home.php"));
                 } else {
                     se("Passwords don't match");

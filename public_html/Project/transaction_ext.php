@@ -26,7 +26,8 @@ $stmt = $db->prepare(
 ");
 $stmt->execute([':id' => $user]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+$frozen = se($_POST, "frozen", null, false);
+if ($frozen === false) {
 if (isset($_POST["save"])) {
   $account_src = $_POST["account_src"];
   $balance = $_POST["balance"];
@@ -77,6 +78,10 @@ if (isset($_POST["save"])) {
   } else {
     flash("Error doing transaction!");
   }
+}
+}
+else {
+  flash("Your account has been frozen!");
 }
 ob_end_flush();
 ?>

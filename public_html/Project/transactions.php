@@ -19,7 +19,7 @@ $db = getDB();
 
 // Get user accounts
 $stmt = $db->prepare(
-  "SELECT id, account_number, account_type, balance
+  "SELECT id, account_number, account_type, balance, frozen
   FROM Accounts
   WHERE user_id = :id AND active = 1
   ORDER BY id ASC
@@ -28,6 +28,8 @@ $stmt->execute([':id' => $user]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_POST["save"])) {
+  $frozen = se($_POST, "frozen", null, false);
+  if ($frozen == false) {
   $balance = $_POST["balance"];
   $memo = $_POST["memo"];
   
@@ -69,33 +71,18 @@ if (isset($_POST["save"])) {
     flash("Error doing transaction!");
   }
 }
+else {
+  flash("Your account has been frozen!");
+}
+}
+
 ob_end_flush();
 require_once(__DIR__ . "/partials/formstyles.php");
-
 ?>
-<style>
-.nav{
-    list-style:none;
-    margin:0;
-    padding:0;
-    text-align:center;
-}
-.nav li{
-    display:inline;
-}
-.nav a{
-    display:inline-block;
-    padding:15px;
-}
-</style>
-<h3><?php se(ucfirst($type)) ?></h3>
 
-<ul class="nav">
-  <li><a <?php echo $type == 'deposit' ? 'active' : ''; ?> href="?type=deposit">Deposit</a></li>
-  <li><a <?php echo $type == 'withdraw' ? 'active' : ''; ?> href="?type=withdraw">Withdraw</a></li>
-  <li><a <?php echo $type == 'transfer' ? 'active' : ''; ?> href="?type=transfer">Transfer</a></li>
-  <li><a href="transaction_ext.php">External Transactions</a></li>
-</ul> 
+<h3 class="text-center mt-4"><?php se(ucfirst($type)) ?></h3>
+
+
 <div class="container">
 <form method="POST">
   <?php if (count($results) > 0): ?>

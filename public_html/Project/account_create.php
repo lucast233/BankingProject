@@ -54,7 +54,6 @@
 <body>
 <br>
 <br>
-<div class="fcontainer">
 <h3 class="text-center mt-3 mb-3">Create New Account</h3>
 <form method="POST">
     <div class="row">
@@ -87,7 +86,6 @@
     </div>
     </div>
 </form>
-</div>
 </body>
 <?php
 require_once(__DIR__ . "/partials/flash.php");
