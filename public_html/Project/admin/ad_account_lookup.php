@@ -14,7 +14,7 @@ if (isset($_POST["query"])) {
 if (isset($_POST["search"]) && !empty($query)) {
   $db = getDB();
   $stmt = $db->prepare(
-    "SELECT Accounts.id, account_number, user_id, account_type, Accounts.created, modified, balance, frozen FROM Accounts
+    "SELECT Accounts.id, account_number, user_id, account_type, Accounts.created, modified, balance, active, frozen FROM Accounts
      JOIN Users ON Accounts.user_id = Users.id 
      WHERE account_number LIKE :q LIMIT 10"
   );
@@ -60,6 +60,10 @@ if (isset($_POST["search"]) && !empty($query)) {
                 <div>
                     <div>User ID: 
                     <?php safer_echo($r["user_id"]); ?></div>
+                </div>
+                <div>
+                    <div>Active: 
+                        <?php safer_echo($r["active"]); ?></div>
                 </div>
                 <div>
                     <div>Frozen: 

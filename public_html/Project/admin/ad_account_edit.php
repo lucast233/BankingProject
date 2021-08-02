@@ -17,19 +17,21 @@ if (isset($_POST["save"])) {
   $account_number = $_POST["account_number"];
   $account_type = $_POST["account_type"];
   $frozen = $_POST["frozen"];
+  $active = $_POST["active"];
   $balance = $_POST["balance"];
   //calc
   $user = get_user_id();
   $db = getDB();
   if (isset($id)) {
 		$stmt = $db->prepare(
-			"UPDATE Accounts SET account_number=:account_number, account_type=:account_type, frozen=:frozen, balance=:balance WHERE id=:id"
+			"UPDATE Accounts SET account_number=:account_number, account_type=:account_type, frozen=:frozen, balance=:balance, active=:active WHERE id=:id"
 		);
 		$r = $stmt->execute([
 			":account_number" => $account_number,
 			":account_type" => $account_type,
       ":frozen" => $frozen,
 			":balance" => $balance,
+      ":active" =>$active,
 			":id" => $id,
 		]);
     if ($r) {
@@ -72,6 +74,13 @@ if (isset($id)) {
 		<option value="savings" <?php echo $result["account_type"] == 'savings' ? 'selected' : ''; ?>>Savings</option>
 		<option value="loan" <?php echo $result["account_type"] == 'loan' ? 'selected' : ''; ?>>Loan</option>
 	</select>
+  </div>
+  <div class="form-group">
+    <label>Active: </label>
+	<select class="form-control" name="active">
+    <option value="1" <?php echo $result["active"] == '1' ? 'selected' : ''; ?>>Open</option>
+    <option value="0" <?php echo $result["active"] == '0' ? 'selected' : ''; ?>>Closed</option>
+	</select>
     </div>
     <div class="form-group">
     <label>Frozen: </label>
@@ -84,7 +93,7 @@ if (isset($id)) {
     <label>Balance: </label>
 	<input class="form-control" type="number" min="0.00" name="balance" step="0.01" value="<?php safer_echo($result["balance"]); ?>"/>
     </div> <br>
-    <input class="btn btn-primary mb-3" type="submit" name="save" value="Create"/>
+    <input class="btn btn-primary mb-3" type="submit" name="save" value="Update"/>
 </form>
   </div>
 </div>

@@ -8,7 +8,7 @@ if (!is_logged_in()) {
 }
 
 $d_query = 
-  "SELECT Accounts.id, account_number, account_type, balance, modified, APY
+  "SELECT Accounts.id, account_number, account_type, balance, modified, APY, frozen
   FROM Accounts
   JOIN Users ON Accounts.user_id = Users.id
   WHERE Users.id = :q AND active = 1
@@ -54,9 +54,9 @@ ob_end_flush();
           </tr>
         </thead>
         <tbody>
-      <?php foreach ($results as $r): ?>
-          <tr>
-            <th scope="row"><?php se($r["account_number"]); ?></th>
+      <?php foreach ($results as $r): ?>        
+          <tr>            
+            <td scope="row"><strong><?php se($r["account_number"]); ?></td></strong>
             <td><?php se(ucfirst($r["account_type"])); ?>
             <?php if ($r["APY"] != 0): ?>
               <br><small>APY: <?php se($r["APY"]); ?>%</small>

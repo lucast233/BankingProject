@@ -7,6 +7,7 @@ if (!is_logged_in()) {
 }
 
 $db = getDB();
+$privacy = get_privacy();
 //save data if we submitted the form
 if (isset($_POST["saved"])) {
   $isValid = true;
@@ -116,7 +117,7 @@ ob_end_flush();
 <div class="fcontainer">
 <h3 class="text-center mt-4">Profile</h3>
 <form method="POST">
-  <?php if (se($_POST, "privacy", null, false) === "public"): ?>
+<?php if (get_privacy() == "public"): ?>
   <div>
     <label for="email">Email Address</label>
     <input type="email" class="form-control" id="email" name="email" maxlength="100" value="<?php se(get_user_email()); ?>">
@@ -159,4 +160,6 @@ ob_end_flush();
   <button type="submit" name="saved" value="Save Profile" class="btn btn-primary">Save Profile</button>
 </form>
 </div>
+<?php se(get_user_email()) ?>
+
 <?php require __DIR__ . "/partials/flash.php"; ?>

@@ -78,7 +78,6 @@ require_once(__DIR__ . "/../lib/functions.php");
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/Project/admin/user_lookup.php">View User</a>
-                                <a class="dropdown-item" href="/Project/admin/ad_account_create.php">...</a>
                                 <a class="dropdown-item" href="/Project/admin/ad_account_create.php">Create Account</a>
                                 <a class="dropdown-item" href="/Project/admin/ad_account_lookup.php">View Account</a>
                                 <a class="dropdown-item" href="/Project/admin/transaction_create.php">Create Transaction</a>

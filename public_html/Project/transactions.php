@@ -21,18 +21,18 @@ $db = getDB();
 $stmt = $db->prepare(
   "SELECT id, account_number, account_type, balance, frozen
   FROM Accounts
-  WHERE user_id = :id AND active = 1
+  WHERE user_id = :id AND active = 1 AND frozen = 'false'
   ORDER BY id ASC
 ");
 $stmt->execute([':id' => $user]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_POST["save"])) {
-  $frozen = se($_POST, "frozen", null, false);
-  if ($frozen == false) {
   $balance = $_POST["balance"];
   $memo = $_POST["memo"];
-  
+  $r = false;
+  $frozen = trim(se($_POST, "frozen", null, false));
+
   if($type == 'deposit') {
     $account = $_POST["account"];
     $r = changeBalance($db, 1, $account, 'deposit', $balance, $memo);
@@ -47,34 +47,32 @@ if (isset($_POST["save"])) {
       die(header("Location: transaction.php?type=withdraw"));
     }
     $r = changeBalance($db, $account, 1, 'withdraw', $balance, $memo);
-  }
-  if($type == 'transfer')  {
-    $account_src = $_POST["account_src"];
-    $account_dest = $_POST["account_dest"];
-    if($account_src == $account_dest){
-      flash("Cannot transfer to same account!");
-      die(header("Location: transaction.php?type=transfer"));
     }
-    $stmt = $db->prepare('SELECT balance FROM Accounts WHERE id = :id');
-    $stmt->execute([':id' => $account_src]);
-    $acct = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($acct["balance"] < $balance) {
-      flash("Not enough funds to transfer!");
-      die(header("Location: transaction.php?type=transfer"));
+    if($type == 'transfer')  {
+      $account_src = $_POST["account_src"];
+      $account_dest = $_POST["account_dest"];
+      if($account_src == $account_dest){
+        flash("Cannot transfer to same account!");
+        die(header("Location: transaction.php?type=transfer"));
+      }
+      $stmt = $db->prepare('SELECT balance FROM Accounts WHERE id = :id');
+      $stmt->execute([':id' => $account_src]);
+      $acct = $stmt->fetch(PDO::FETCH_ASSOC);
+      if($acct["balance"] < $balance) {
+        flash("Not enough funds to transfer!");
+        die(header("Location: transaction.php?type=transfer"));
+      }
+      $r = changeBalance($db, $account_src, $account_dest, 'transfer', $balance, $memo);
     }
-    $r = changeBalance($db, $account_src, $account_dest, 'transfer', $balance, $memo);
-  }
-  
-  if ($r) {
-    flash("Successfully executed transaction.");
-  } else {
-    flash("Error doing transaction!");
+    if ($r) {
+      flash("Successfully executed transaction.");
+    }
+    else {
+      flash("Error doing transaction!");
   }
 }
-else {
-  flash("Your account has been frozen!");
-}
-}
+
+
 
 ob_end_flush();
 require_once(__DIR__ . "/partials/formstyles.php");
@@ -114,7 +112,7 @@ require_once(__DIR__ . "/partials/formstyles.php");
   <div class="form-group">
     <label for="deposit">Amount</label>
     <div class="input-group">
-        <span>$</span>
+        <span class="input-group-text">$</span>
       <input type="number" class="form-control" id="deposit" min="0.00" name="balance" step="0.01" placeholder="0.00"/>
     </div>
   </div>
@@ -123,7 +121,7 @@ require_once(__DIR__ . "/partials/formstyles.php");
     <label for="memo">Memo</label>
       </div>
     <textarea class="form-control" id="memo" name="memo" maxlength="250"></textarea>
-  </div>
+  </div> <br>
   <div>
   <input type="submit" name="save" value="Complete Transaction"></input>
   </div>

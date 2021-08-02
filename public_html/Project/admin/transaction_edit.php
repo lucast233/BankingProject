@@ -97,7 +97,7 @@ if (isset($id)) {
   <label>Memo: </label>
 	<input class="form-control" name="memo" type="text" value="<?php safer_echo($result["memo"]); ?>"/> 
   </div> <br>
-  <input class="btn btn-primary mb-3" type="submit" name="save" value="Create"/>
+  <input class="btn btn-primary mb-3" type="submit" name="save" value="Update"/>
 </form>
         </div>
     </div>

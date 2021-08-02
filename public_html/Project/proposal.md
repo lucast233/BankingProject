@@ -145,9 +145,9 @@ Milestone Features:
 			- These will reflect in the transaction history page
 	
 	Milestone 4:
-	- [ ] User can set their profile to be public or private (will need another column in Users table)
+	- [x] [08/02/21] User can set their profile to be public or private (will need another column in Users table)
 		- If public, hide email address from other users
-	- [ ] User will be able open a savings account
+	- [x] [07/31/21] User will be able open a savings account
 		- System will generate a 12 digit/character account number per the existing rules (see Checking Account above)
 		- System will associate the account to the user
 		- Account type will be set as savings
@@ -159,7 +159,7 @@ Milestone Features:
 		- User will see user-friendly error messages when appropriate
 		- User will see user-friendly success message when account is created successfully
 			- Redirect user to their Accounts page
-	- [ ] User will be able to take out a loan
+	- [x] [07/31/21] User will be able to take out a loan
 		- System will generate a 12 digit/character account number per the existing rules (see Checking Account above)
 		- Account type will be set as loan
 		- Will require a minimum value of $500
@@ -178,15 +178,15 @@ Milestone Features:
 		- User will see user-friendly error messages when appropriate
 		- User will see user-friendly success message when account is created successfully
 			- Redirect user to their Accounts page
-	- [ ] Listing accounts and/or viewing Account Details should show any applicable APY or “-” if none is set for the particular account (may alternatively just hide the display for these types)
-	- [ ] User will be able to close an account
+	- [x] [07/31/21] Listing accounts and/or viewing Account Details should show any applicable APY or “-” if none is set for the particular account (may alternatively just hide the display for these types)
+	- [x] [07/31/21] User will be able to close an account
 		- User must transfer or withdraw all funds out of the account before doing so
 		- Account should have a column “active” that will get set as false.
 			- All queries for Accounts should be updated to pull only “active” = true accounts (i.e., dropdowns, My Accounts, etc)
 			- Do not delete the record, this is a soft delete so it doesn’t break transactions
 		- Closed accounts don’t show up anymore
 		- If the account is a loan, it must be paid off in full first
-	- [ ] Admin role (leave this section for last)
+	- [x] [08/02/21] Admin role (leave this section for last)
 		- Will be able to search for users by firstname and/or lastname
 		- Will be able to look-up specific account numbers (partial match).
 		- Will be able to see the transaction history of an account

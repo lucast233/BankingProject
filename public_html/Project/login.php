@@ -3,8 +3,7 @@ require_once(__DIR__ . "/partials/nav.php");
 if (isset($_POST["submit"])) {
     $email = se($_POST, "email", null, false);
     $password = trim(se($_POST, "password", null, false));
-    $is_active = se($_POST, "is_active", null, false);
-
+    $username = trim(se($_POST, "username", null, false));
     $isValid = true;
     $db = getDB();
 
@@ -27,9 +26,9 @@ if (isset($_POST["submit"])) {
     }
 
     if ($isValid) {
-        $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as 'username', password from Users where email = :email or username = :email LIMIT 1");
+        $stmt = $db->prepare("SELECT id, email, fname, lname, is_active, IFNULL(username, email) as `username`, password from Users where (email = :email or username = :username) AND is_active=1  LIMIT 1");
         try {
-            $stmt->execute([":email" => $email]);
+            $stmt->execute([":email" => $email, ":username" => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($user) {
                 $upass = $user["password"];
@@ -51,7 +50,12 @@ if (isset($_POST["submit"])) {
                 } else {
                     se("Passwords don't match");
                 }
-            } else {
+            } 
+            elseif ($is_active == 0) {
+                flash("Sorry your account is no longer active. :( ", "warning");
+                die(header("Location: login.php"));
+            }
+            else {
                 se("User doesn't exist");
             }
         } catch (Exception $e) {
