@@ -117,12 +117,10 @@ ob_end_flush();
 <div class="fcontainer">
 <h3 class="text-center mt-4">Profile</h3>
 <form method="POST">
-<?php if (get_privacy() == "public"): ?>
   <div>
     <label for="email">Email Address</label>
     <input type="email" class="form-control" id="email" name="email" maxlength="100" value="<?php se(get_user_email()); ?>">
   </div>
-  <?php endif; ?>
   <div>
     <label for="username">Username</label>
     <input type="text" class="form-control" id="username" name="username" maxlength="60" value="<?php se(get_username()); ?>">
@@ -138,8 +136,8 @@ ob_end_flush();
 <div>
     <label for="privacy">Privacy</label>
     <select class="form-control" id="privacy" name="privacy">
-      <option value="public" <?php echo get_privacy() == "public" ? "selected": ""; ?>>Public</option>
-      <option value="private" <?php echo get_privacy() == "private" ? "selected": ""; ?>>Private</option>
+      <option value="public" <?php echo get_privacy() == 'public' ? 'selected' : ''; ?>>Public</option>
+      <option value="private" <?php echo get_privacy() == 'private' ? 'selected' : ''; ?>>Private</option>
 	  </select>
     <small class="form-text text-muted">Allow other users to see your profile.</small>
   </div>
@@ -160,6 +158,5 @@ ob_end_flush();
   <button type="submit" name="saved" value="Save Profile" class="btn btn-primary">Save Profile</button>
 </form>
 </div>
-<?php se(get_user_email()) ?>
 
 <?php require __DIR__ . "/partials/flash.php"; ?>

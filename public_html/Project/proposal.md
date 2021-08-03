@@ -145,7 +145,8 @@ Milestone Features:
 			- These will reflect in the transaction history page
 	
 	Milestone 4:
-	- [x] [08/02/21] User can set their profile to be public or private (will need another column in Users table)
+	- [ ] [08/02/21] I implemented the privacy field into the table and added a input field to change your privacy setting, but I couldn't figure out how to get it working properly.  When it was public, the email wouldn't show unless I clicked on public and updated it again, but then when logging out and logging back in the email field was hidden again.  Also when it did display the email field after submitting the form again, the actual user's email wouldn't show and the text box would be blank.  On the other hand, the privacy field also is stuck on public even if it is actually private, for example, if my account is private is displays public but then when I select private again and refresh the page it stays on private until I log out and log back in again.  
+	- User can set their profile to be public or private (will need another column in Users table)
 		- If public, hide email address from other users
 	- [x] [07/31/21] User will be able open a savings account
 		- System will generate a 12 digit/character account number per the existing rules (see Checking Account above)
@@ -194,6 +195,7 @@ Milestone Features:
 			- Frozen accounts still show in results, but they can’t be interacted with.
 			- [Dev note]: Will want to add a column to Accounts table called frozen and default it to false
 				- Update transactions logic to not allow frozen accounts to be used for a transaction
+		- [ ] I was able to make  page that creates accounts, but it only applies it to the admin user, I couldn't figure out how to give an option of all users and assign the account to that user.
 		- Will be able to open accounts for specific users
 		- Will be able to deactivate a user
 			- Requires a new column on the Users table (i.e., is_active)

@@ -30,9 +30,10 @@ if (isset($_POST["save"])) {
 		$r = $stmt->execute([
 			":email" => $email,
 			":username" => $username,
-            ":fname" => $fname,
+      ":fname" => $fname,
 			":lname" => $lname,
 			":is_active" => $is_active,
+      ":id" => $id,
 		]);
     if ($r) {
       flash("Updated successfully with id: " . $id);

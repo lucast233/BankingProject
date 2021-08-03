@@ -72,7 +72,7 @@ if (isset($_POST["submit"])) {
 <?php
 require_once(__DIR__ . "/partials/formstyles.php");
 ?>
-<div class="container">
+<div class="container"> <br>
     <h1>Login</h1>
     <form method="POST" onsubmit="return validate(this);">
         <div class="row">
