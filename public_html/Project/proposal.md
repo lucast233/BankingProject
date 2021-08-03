@@ -8,6 +8,8 @@ Github Link: <https://github.com/lucast52501/IT202450/tree/Milestone-1/public_ht
 
 Website Link: <https://lt233-production.herokuapp.com/Project/login.php>
 
+Video Link (If it doesn't work, at the end it is embedded) : https://mediaspace.njit.edu/media/Banking+Project/1_ncgohq4p
+
 Your Name: Lucas Terrone
 
 Milestone Features:
@@ -201,3 +203,6 @@ Milestone Features:
 			- Requires a new column on the Users table (i.e., is_active)
 			- Deactivated users will be restricted from logging in
 				- “Sorry your account is no longer active”
+
+
+<iframe id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2071341/sp/207134100/embedIframeJs/uiconf_id/33247191/partner_id/2071341?iframeembed=true&playerId=kaltura_player&entry_id=1_ncgohq4p&flashvars[streamerType]=auto&amp;flashvars[localizationCode]=en&amp;flashvars[leadWithHTML5]=true&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_vbxobmh4" width="400" height="285" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe>
