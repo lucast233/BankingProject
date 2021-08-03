@@ -8,6 +8,8 @@ Github Link: <https://github.com/lucast52501/IT202450/tree/Milestone-1/public_ht
 
 Website Link: <https://lt233-production.herokuapp.com/Project/login.php>
 
+Video Link (If it doesn't work, at the end it is embedded) : https://mediaspace.njit.edu/media/Banking+Project/1_ncgohq4p
+
 Your Name: Lucas Terrone
 
 Milestone Features:
@@ -145,9 +147,10 @@ Milestone Features:
 			- These will reflect in the transaction history page
 	
 	Milestone 4:
-	- [ ] User can set their profile to be public or private (will need another column in Users table)
+	- [ ] [08/02/21] I implemented the privacy field into the table and added a input field to change your privacy setting, but I couldn't figure out how to get it working properly.  When it was public, the email wouldn't show unless I clicked on public and updated it again, but then when logging out and logging back in the email field was hidden again.  Also when it did display the email field after submitting the form again, the actual user's email wouldn't show and the text box would be blank.  On the other hand, the privacy field also is stuck on public even if it is actually private, for example, if my account is private is displays public but then when I select private again and refresh the page it stays on private until I log out and log back in again.  
+	- User can set their profile to be public or private (will need another column in Users table)
 		- If public, hide email address from other users
-	- [ ] User will be able open a savings account
+	- [x] [07/31/21] User will be able open a savings account
 		- System will generate a 12 digit/character account number per the existing rules (see Checking Account above)
 		- System will associate the account to the user
 		- Account type will be set as savings
@@ -159,7 +162,7 @@ Milestone Features:
 		- User will see user-friendly error messages when appropriate
 		- User will see user-friendly success message when account is created successfully
 			- Redirect user to their Accounts page
-	- [ ] User will be able to take out a loan
+	- [x] [07/31/21] User will be able to take out a loan
 		- System will generate a 12 digit/character account number per the existing rules (see Checking Account above)
 		- Account type will be set as loan
 		- Will require a minimum value of $500
@@ -178,15 +181,15 @@ Milestone Features:
 		- User will see user-friendly error messages when appropriate
 		- User will see user-friendly success message when account is created successfully
 			- Redirect user to their Accounts page
-	- [ ] Listing accounts and/or viewing Account Details should show any applicable APY or “-” if none is set for the particular account (may alternatively just hide the display for these types)
-	- [ ] User will be able to close an account
+	- [x] [07/31/21] Listing accounts and/or viewing Account Details should show any applicable APY or “-” if none is set for the particular account (may alternatively just hide the display for these types)
+	- [x] [07/31/21] User will be able to close an account
 		- User must transfer or withdraw all funds out of the account before doing so
 		- Account should have a column “active” that will get set as false.
 			- All queries for Accounts should be updated to pull only “active” = true accounts (i.e., dropdowns, My Accounts, etc)
 			- Do not delete the record, this is a soft delete so it doesn’t break transactions
 		- Closed accounts don’t show up anymore
 		- If the account is a loan, it must be paid off in full first
-	- [ ] Admin role (leave this section for last)
+	- [x] [08/02/21] Admin role (leave this section for last)
 		- Will be able to search for users by firstname and/or lastname
 		- Will be able to look-up specific account numbers (partial match).
 		- Will be able to see the transaction history of an account
@@ -194,8 +197,12 @@ Milestone Features:
 			- Frozen accounts still show in results, but they can’t be interacted with.
 			- [Dev note]: Will want to add a column to Accounts table called frozen and default it to false
 				- Update transactions logic to not allow frozen accounts to be used for a transaction
+		- [ ] I was able to make  page that creates accounts, but it only applies it to the admin user, I couldn't figure out how to give an option of all users and assign the account to that user.
 		- Will be able to open accounts for specific users
 		- Will be able to deactivate a user
 			- Requires a new column on the Users table (i.e., is_active)
 			- Deactivated users will be restricted from logging in
 				- “Sorry your account is no longer active”
+
+
+<iframe id="kaltura_player" src="https://cdnapisec.kaltura.com/p/2071341/sp/207134100/embedIframeJs/uiconf_id/33247191/partner_id/2071341?iframeembed=true&playerId=kaltura_player&entry_id=1_ncgohq4p&flashvars[streamerType]=auto&amp;flashvars[localizationCode]=en&amp;flashvars[leadWithHTML5]=true&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_vbxobmh4" width="400" height="285" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe>

@@ -3,8 +3,14 @@ require_once(__DIR__ . "/partials/nav.php");
 if (isset($_POST["submit"])) {
     $email = se($_POST, "email", null, false);
     $password = trim(se($_POST, "password", null, false));
-
+    $username = trim(se($_POST, "username", null, false));
     $isValid = true;
+    $db = getDB();
+
+    if ($is_active === 0) {
+        flash("Sorry, your account is no longer active", "danger");
+        $isValid = false;
+    }
     if (!isset($email) || !isset($password)) {
         flash("Must provide email and password", "warning");
         $isValid = false;
@@ -18,40 +24,38 @@ if (isset($_POST["submit"])) {
         flash("Invalid email", "warning");
         $isValid = false;
     }
+
     if ($isValid) {
-        //do our registration
-        $db = getDB();
-        //$stmt = $db->prepare("INSERT INTO Users (email, password) VALUES (:email, :password)");
-        //$hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $db->prepare("SELECT id, email, IFNULL(username, email) as 'username', password from Users where email = :email or username = :email LIMIT 1");
+        $stmt = $db->prepare("SELECT id, email, fname, lname, is_active, IFNULL(username, email) as `username`, password from Users where (email = :email or username = :username) AND is_active=1  LIMIT 1");
         try {
-            $stmt->execute([":email" => $email]);
+            $stmt->execute([":email" => $email, ":username" => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($user) {
                 $upass = $user["password"];
                 if (password_verify($password, $upass)) {
                     flash("Login successful", "success");
                     unset($user["password"]);
-                    //save user info
                     $_SESSION["user"] = $user;
-                    //lookup roles assigned to this user
                     $stmt = $db->prepare("SELECT Roles.name FROM Roles 
                     JOIN UserRoles on Roles.id = UserRoles.role_id 
                     where UserRoles.user_id = :user_id and Roles.is_active = 1 and UserRoles.is_active = 1");
                     $stmt->execute([":user_id" => $user["id"]]);
                     $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    //save roles or empty array
                     if ($roles) {
                         $_SESSION["user"]["roles"] = $roles;
                     } else {
                         $_SESSION["user"]["roles"] = [];
                     }
-                    //echo "<pre>" . var_export($_SESSION, true) . "</pre>";
                     die(header("Location: home.php"));
                 } else {
                     se("Passwords don't match");
                 }
-            } else {
+            } 
+            elseif ($is_active == 0) {
+                flash("Sorry your account is no longer active. :( ", "warning");
+                die(header("Location: login.php"));
+            }
+            else {
                 se("User doesn't exist");
             }
         } catch (Exception $e) {
@@ -68,7 +72,7 @@ if (isset($_POST["submit"])) {
 <?php
 require_once(__DIR__ . "/partials/formstyles.php");
 ?>
-<div class="container">
+<div class="container"> <br>
     <h1>Login</h1>
     <form method="POST" onsubmit="return validate(this);">
         <div class="row">

@@ -7,14 +7,15 @@ if (!is_logged_in()) {
 }
 
 $db = getDB();
+$privacy = get_privacy();
 //save data if we submitted the form
 if (isset($_POST["saved"])) {
   $isValid = true;
   //check if our email changed
   $newEmail = get_user_email();
-  if (get_user_email() != $_POST["email"]) {
+  $email = se($_POST,"email",null,false);
+  if (get_user_email() != $email) {
     //TODO we'll need to check if the email is available
-    $email = $_POST["email"];
     $stmt = $db->prepare(
       "SELECT COUNT(1) as InUse from Users where email = :email"
     );
@@ -135,8 +136,8 @@ ob_end_flush();
 <div>
     <label for="privacy">Privacy</label>
     <select class="form-control" id="privacy" name="privacy">
-      <option value="private" <?php echo get_privacy() == "private" ? "selected": ""; ?>>Private</option>
-      <option value="public" <?php echo get_privacy() == "public" ? "selected": ""; ?>>Public</option>
+      <option value="public" <?php echo get_privacy() == 'public' ? 'selected' : ''; ?>>Public</option>
+      <option value="private" <?php echo get_privacy() == 'private' ? 'selected' : ''; ?>>Private</option>
 	  </select>
     <small class="form-text text-muted">Allow other users to see your profile.</small>
   </div>
@@ -153,7 +154,9 @@ ob_end_flush();
     <label for="confirm">Confirm Password</label>
     <input type="password" class="form-control" id="confirm" name="confirm" maxlength="60">
   </div>
+  <br>
   <button type="submit" name="saved" value="Save Profile" class="btn btn-primary">Save Profile</button>
 </form>
 </div>
+
 <?php require __DIR__ . "/partials/flash.php"; ?>

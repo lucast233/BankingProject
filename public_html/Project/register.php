@@ -80,7 +80,7 @@ if (!isset($username)) {
 <?php
 require_once(__DIR__ . "/partials/formstyles.php");
 ?>
-<div class="fcontainer">
+<div> <br>
     <h1>Register</h1>
     <form method="POST" onsubmit="return validate(this);">
         <div class="row">

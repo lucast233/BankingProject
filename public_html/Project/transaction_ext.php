@@ -21,7 +21,7 @@ $db = getDB();
 $stmt = $db->prepare(
   "SELECT id, account_number, account_type, balance
   FROM Accounts
-  WHERE user_id = :id AND account_type NOT LIKE 'loan' AND active = 1
+  WHERE user_id = :id AND account_type NOT LIKE 'loan' AND active = 1 AND frozen = 'false'
   ORDER BY id ASC
 ");
 $stmt->execute([':id' => $user]);
@@ -41,13 +41,13 @@ if (isset($_POST["save"])) {
   }
 
   $stmt = $db->prepare(
-    'SELECT Accounts.id, Users.username, account_type
+    "SELECT Accounts.id, Users.username, account_type, frozen
     FROM Accounts
     JOIN Users ON Accounts.user_id = Users.id
     WHERE Users.lname = :lname
     AND Accounts.account_number LIKE :last_four
-    AND active = 1
-  ');
+    AND active = 1 AND frozen = 'false'
+  ");
   $stmt->execute([
     ':lname' => $lname,
     ':last_four' => "%$last_four"
@@ -122,7 +122,7 @@ ob_end_flush();
   <div class="form-group">
     <label for="memo">Memo</label>
     <textarea class="form-control" id="memo" name="memo" maxlength="250"></textarea>
-  </div>
+  </div> <br>
   <button type="submit" name="save" value="Do Transaction" class="btn btn-success">Do Transaction</button>
 </form>
 
